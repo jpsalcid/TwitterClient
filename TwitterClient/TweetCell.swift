@@ -49,6 +49,12 @@ class TweetCell: UITableViewCell {
         } else if tweet.retweeted == true {
             retweetButton.setImage(UIImage(named: "retweet_on.png"), forState: UIControlState.Normal)
         }
+        
+        if tweet.favorited != true {
+            favoriteButton.setImage(UIImage(named: "favorite.png"), forState: UIControlState.Normal)
+        } else if tweet.favorited == true {
+            favoriteButton.setImage(UIImage(named: "favorite_on.png"), forState: UIControlState.Normal)
+        }
     
     }
 

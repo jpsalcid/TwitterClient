@@ -21,7 +21,8 @@ class Tweet: NSObject {
     var retweetUser: User?
     // kevin suggestion store the retweet Id since you lose it on refresh
     var retweetStringId: String?
-    
+    var retweetCount: Int?
+    var favoriteCount: Int?
     
     init(dictionary: NSDictionary){
         id = dictionary["id"] as? Int
@@ -45,6 +46,9 @@ class Tweet: NSObject {
         retweeted = dictionary["retweeted"] as? Bool
         favorited = dictionary["favorited"] as? Bool
         retweetStatus = dictionary["retweeted_status"] as? NSDictionary
+        retweetCount = dictionary["retweet_count"] as? Int
+        favoriteCount = dictionary["favorite_count"] as? Int
+        
         
         // swap users
         // retweet user is the current user, the original is in the retweet status

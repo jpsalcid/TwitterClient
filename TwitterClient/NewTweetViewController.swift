@@ -39,8 +39,11 @@ class NewTweetViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func onCancel(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)        
+    }
+    
     @IBAction func onTweet(sender: AnyObject) {
-        println("testtting")
         if tweetText.text != "" {
             var params: NSDictionary?
             if originalTweetStringId != nil {
