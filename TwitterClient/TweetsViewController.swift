@@ -14,14 +14,17 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
 
         // Do any additional setup after loading the view.
         TwitterClient.sharedInstance.homeTimelineWithParams(nil, completion: { (tweets, error) -> () in
             self.tweets = tweets
             self.tableView.reloadData()
         })
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.estimatedRowHeight = 300
+//        tableView.rowHeight = UITableViewAutomaticDimension
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,11 +35,73 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         User.currentUser?.logout()
     }
     
+    @IBAction func onFavorite(sender: AnyObject) {
+        let favoriteButton = sender as! UIButton
+        var favoriteTweet = tweets![favoriteButton.tag] as Tweet
+        var params = ["id" : favoriteTweet.idString!]
+        
+        if favoriteTweet.favorited == true {
+            TwitterClient.sharedInstance.favoritesDestroy(params, completion: { (tweet, error) -> () in
+                if error == nil {
+                    favoriteButton.setImage(UIImage(named: "favorite.png"), forState: UIControlState.Normal)
+                    favoriteTweet.favorited = false
+                } else {
+                    println(error)
+                }
+            })
+        } else {
+            TwitterClient.sharedInstance.favoritesCreate(params, completion: { (tweet, error) -> () in
+                if error == nil {
+                    favoriteButton.setImage(UIImage(named: "favorite_on.png"), forState: UIControlState.Normal)
+                    favoriteTweet.favorited = true
+                } else {
+                    println(error)
+                }
+            })
+        }
+    }
+    
+    @IBAction func onRetweet(sender: AnyObject) {
+        var retweetButton = sender as! UIButton
+        var retweet = tweets![retweetButton.tag] as Tweet
+        var params = ["id" : retweet.idString!]
+        
+        // retweet
+        if retweet.retweeted != true {
+            TwitterClient.sharedInstance.statusesRetweets(params, completion: { (tweet, error) -> () in
+                if error == nil {
+                    retweetButton.setImage(UIImage(named: "retweet_on.png"), forState: UIControlState.Normal)
+                    retweet.retweeted = true
+                    retweet.retweetStringId = tweet?.idString
+                } else {
+                    println(error)
+                }
+            })
+        // destroy
+        } else if retweet.retweeted == true {
+            // only do this if we have the retweetId, otherwise we would have to fetch this...
+            if retweet.retweetStringId != nil {
+                params["id"] = retweet.retweetStringId
+                TwitterClient.sharedInstance.statusesDestroy(params, completion: { (tweet, error) -> () in
+                    if error == nil {
+                        retweetButton.setImage(UIImage(named: "retweet.png"), forState: UIControlState.Normal)
+                        retweet.retweeted = false
+                        retweet.retweetStringId = nil
+                    } else {
+                        println(error)
+                    }
+                })
+            }
+        }
+    }
+    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as! TweetCell
         cell.setContentWithTweet(tweets![indexPath.row])
+        cell.retweetButton.tag = indexPath.row
+        cell.favoriteButton.tag = indexPath.row
         return cell
     }
     

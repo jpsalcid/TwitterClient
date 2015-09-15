@@ -10,14 +10,22 @@ import UIKit
 
 class Tweet: NSObject {
     var id: Int?
+    var idString: String?
     var user: User?
     var text: String?
     var createdAtString: String?
     var createdAt: NSDate?
-    var elapsedTime: Int?
+    var retweeted: Bool?
+    var favorited: Bool?
+    var retweetStatus: NSDictionary?
+    var retweetUser: User?
+    // kevin suggestion store the retweet Id since you lose it on refresh
+    var retweetStringId: String?
+    
     
     init(dictionary: NSDictionary){
         id = dictionary["id"] as? Int
+        idString = dictionary["id_str"] as? String
         user = User(dictionary: dictionary["user"] as! NSDictionary)
         text = dictionary["text"] as? String
         
@@ -33,6 +41,18 @@ class Tweet: NSObject {
             shortFormatter.dateFormat = "M/d/yy"
             createdAtString = shortFormatter.stringFromDate(createdAt!)
         }
+        
+        retweeted = dictionary["retweeted"] as? Bool
+        favorited = dictionary["favorited"] as? Bool
+        retweetStatus = dictionary["retweeted_status"] as? NSDictionary
+        
+        // swap users
+        // retweet user is the current user, the original is in the retweet status
+        if retweetStatus != nil {
+            retweetUser = user
+            user = User(dictionary: retweetStatus?["user"] as! NSDictionary)
+        }
+        
         
     }
     

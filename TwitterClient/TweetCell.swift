@@ -12,9 +12,11 @@ class TweetCell: UITableViewCell {
 
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var usernameLabel: UILabel!
+//    @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var timestampLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var retweetButton: UIButton!
+    @IBOutlet weak var favoriteButton: UIButton!
     
     
     override func awakeFromNib() {
@@ -33,13 +35,21 @@ class TweetCell: UITableViewCell {
     
     func setContentWithTweet(tweet: Tweet) {
         nameLabel.text = tweet.user!.name
-        usernameLabel.text = tweet.user!.screenname
+//        usernameLabel.text = tweet.user!.screenname
+        descriptionLabel.text = tweet.text
+        timestampLabel.text = tweet.createdAtString
         
         if let urlString = tweet.user!.profileImageUrl {
             let ownerAvatarURL = NSURL(string: urlString)
             avatarImageView.setImageWithURL(ownerAvatarURL)
         }
-        descriptionLabel.text = tweet.text
+
+        if tweet.retweeted != true {
+            retweetButton.setImage(UIImage(named: "retweet.png"), forState: UIControlState.Normal)
+        } else if tweet.retweeted == true {
+            retweetButton.setImage(UIImage(named: "retweet_on.png"), forState: UIControlState.Normal)
+        }
+    
     }
 
 }
