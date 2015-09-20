@@ -36,12 +36,9 @@ class ProfileViewController: UIViewController {
         }
         
         nameLabel.text = User.currentUser!.name
-        let tweetCountString = (User.currentUser!.dictionary["statuses_count"] as! NSNumber).stringValue;
-        let followersCountString = (User.currentUser!.dictionary["followers_count"] as! NSNumber).stringValue;
-        let followingCountString = (User.currentUser!.dictionary["following"] as! NSNumber).stringValue;
-        tweetCount.text = tweetCountString
-        followerCount.text = followersCountString
-        followingCount.text = followingCountString
+        tweetCount.text = User.currentUser!.tweets?.stringValue
+        followerCount.text = User.currentUser!.followers?.stringValue
+        followingCount.text = User.currentUser!.following?.stringValue
 
         // Do any additional setup after loading the view.
     }

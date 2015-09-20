@@ -119,12 +119,9 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
             
             // fetch user
             TwitterClient.sharedInstance.GET("1.1/account/verify_credentials.json", parameters: nil, success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
-                print("THE USER")
-                print(response)
                 let user = User(dictionary: response as! NSDictionary)
                 User.currentUser = user
                 print("user: \(user.name)")
-                print("user following: \(user.following)")
                 self.loginCompletition?(user: user, error: nil)
             }, failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 print("failed to get user")

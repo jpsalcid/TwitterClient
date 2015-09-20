@@ -19,9 +19,9 @@ class User: NSObject {
     var profileImageUrl: String?
     var backgroundProfileImageUrl: String?
     var tagline: String?
-    var tweets: String?
-    var followers: String?
-    var following: String?
+    var tweets: NSNumber?
+    var followers: NSNumber?
+    var following: NSNumber?
     var dictionary: NSDictionary
     
     init(dictionary: NSDictionary) {
@@ -31,9 +31,9 @@ class User: NSObject {
         profileImageUrl = dictionary["profile_image_url_https"] as? String
         backgroundProfileImageUrl = dictionary["profile_background_image_url_https"] as? String
         
-        followers = dictionary["followers_count"] as? String
-        following = dictionary["following"] as? String
-        tweets = dictionary["statuses_count"] as? String
+        followers = dictionary["followers_count"] as? NSNumber
+        following = dictionary["following"] as? NSNumber
+        tweets = dictionary["statuses_count"] as? NSNumber
     
         tagline = dictionary["description"] as? String
     }
