@@ -33,12 +33,12 @@ class Tweet: NSObject {
         let createdAtTweetString = dictionary["created_at"] as? String
         
         
-        var longFormatter = NSDateFormatter()
+        let longFormatter = NSDateFormatter()
         longFormatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         createdAt = longFormatter.dateFromString(createdAtTweetString!)
         
         if createdAt != nil {
-            var shortFormatter = NSDateFormatter()
+            let shortFormatter = NSDateFormatter()
             shortFormatter.dateFormat = "M/d/yy"
             createdAtString = shortFormatter.stringFromDate(createdAt!)
         }

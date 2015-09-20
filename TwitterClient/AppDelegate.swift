@@ -16,19 +16,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let hamburgerViewController = storyboard.instantiateViewControllerWithIdentifier("HamburgerController") as! HamburgerViewController
+        
+        let menuViewController = storyboard.instantiateViewControllerWithIdentifier("MenuViewController") as! MenuViewController
+        
+        menuViewController.hamburgerViewController = hamburgerViewController
+            
+        hamburgerViewController.menuViewController = menuViewController
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userDidLogout", name: userDidLogoutNotification, object: nil)
         if User.currentUser != nil {
             // Go to the logged in screen
-            println("current user detected: \(User.currentUser!.name)")
-            var vc = storyboard.instantiateViewControllerWithIdentifier("TweetsNavigationController") as! UIViewController
-            window?.rootViewController = vc
+            print("current user detected: \(User.currentUser!.name)")
+//            let vc = storyboard.instantiateViewControllerWithIdentifier("TweetsNavigationController")
+//            let vc = storyboard.instantiateViewControllerWithIdentifier("HamburgerController") as! HamburgerViewController
+            
+//            vc.menuViewController = menuViewController
+            window?.rootViewController = hamburgerViewController
+
         }
+        
         return true
     }
     
     func userDidLogout() {
-        var vc = storyboard.instantiateInitialViewController() as! UIViewController
+        var vc = storyboard.instantiateInitialViewController() as! UIViewController!
         window?.rootViewController = vc
     }
 
@@ -54,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
          TwitterClient.sharedInstance.openURL(url)
         return true
     }

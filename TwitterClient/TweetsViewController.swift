@@ -42,8 +42,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBAction func onFavorite(sender: AnyObject) {
         let favoriteButton = sender as! UIButton
-        var favoriteTweet = tweets![favoriteButton.tag] as Tweet
-        var params = ["id" : favoriteTweet.idString!]
+        let favoriteTweet = tweets![favoriteButton.tag] as Tweet
+        let params = ["id" : favoriteTweet.idString!]
         
         if favoriteTweet.favorited == true {
             TwitterClient.sharedInstance.favoritesDestroy(params, completion: { (tweet, error) -> () in
@@ -51,7 +51,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                     favoriteButton.setImage(UIImage(named: "favorite.png"), forState: UIControlState.Normal)
                     favoriteTweet.favorited = false
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         } else {
@@ -60,15 +60,15 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                     favoriteButton.setImage(UIImage(named: "favorite_on.png"), forState: UIControlState.Normal)
                     favoriteTweet.favorited = true
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         }
     }
     
     @IBAction func onRetweet(sender: AnyObject) {
-        var retweetButton = sender as! UIButton
-        var retweet = tweets![retweetButton.tag] as Tweet
+        let retweetButton = sender as! UIButton
+        let retweet = tweets![retweetButton.tag] as Tweet
         var params = ["id" : retweet.idString!]
         
         // retweet
@@ -79,7 +79,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                     retweet.retweeted = true
                     retweet.retweetStringId = tweet?.idString
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         // destroy
@@ -93,7 +93,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                         retweet.retweeted = false
                         retweet.retweetStringId = nil
                     } else {
-                        println(error)
+                        print(error)
                     }
                 })
             }
@@ -107,7 +107,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 self.tweets = tweets
                 self.tableView.reloadData()
             } else {
-                println(error)
+                print(error)
             }
         })
     }

@@ -55,7 +55,7 @@ class NewTweetViewController: UIViewController {
                 if error == nil {
                     self.dismissViewControllerAnimated(true, completion: nil)
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         }

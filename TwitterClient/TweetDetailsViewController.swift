@@ -60,8 +60,8 @@ class TweetDetailsViewController: UIViewController {
     }
     
     @IBAction func onRetweet(sender: AnyObject) {
-        var retweetButton = sender as! UIButton
-        var retweet = tweet!
+        let retweetButton = sender as! UIButton
+        let retweet = tweet!
         var params = ["id" : retweet.idString!]
         
         // retweet
@@ -72,7 +72,7 @@ class TweetDetailsViewController: UIViewController {
                     retweet.retweeted = true
                     retweet.retweetStringId = tweet?.idString
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
             // destroy
@@ -86,7 +86,7 @@ class TweetDetailsViewController: UIViewController {
                         retweet.retweeted = false
                         retweet.retweetStringId = nil
                     } else {
-                        println(error)
+                        print(error)
                     }
                 })
             }
@@ -96,8 +96,8 @@ class TweetDetailsViewController: UIViewController {
     
     @IBAction func onFavorite(sender: AnyObject) {
         let favoriteButton = sender as! UIButton
-        var favoriteTweet = tweet!
-        var params = ["id" : favoriteTweet.idString!]
+        let favoriteTweet = tweet!
+        let params = ["id" : favoriteTweet.idString!]
         
         if favoriteTweet.favorited == true {
             TwitterClient.sharedInstance.favoritesDestroy(params, completion: { (tweet, error) -> () in
@@ -105,7 +105,7 @@ class TweetDetailsViewController: UIViewController {
                     favoriteButton.setImage(UIImage(named: "favorite.png"), forState: UIControlState.Normal)
                     favoriteTweet.favorited = false
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         } else {
@@ -114,7 +114,7 @@ class TweetDetailsViewController: UIViewController {
                     favoriteButton.setImage(UIImage(named: "favorite_on.png"), forState: UIControlState.Normal)
                     favoriteTweet.favorited = true
                 } else {
-                    println(error)
+                    print(error)
                 }
             })
         }
